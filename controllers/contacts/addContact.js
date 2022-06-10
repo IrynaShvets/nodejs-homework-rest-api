@@ -1,10 +1,14 @@
-const operations = require("../../models/contacts");
+const { Contact } = require("../../models");
 
 const addContact = async (req, res) => {
+  const result = await Contact.create(req.body);
+  const { favorite } = req.body;
   if (!req.body) {
-    res.error.message = "Missing required field";
+    return res.status(400).json({ message: "missing required name field" });
   }
-  const result = await operations.addContact(req.body);
+  if (!favorite) {
+    req.body.favorite = false;
+  }
   res.status(201).json({
     status: "success",
     code: 201,
