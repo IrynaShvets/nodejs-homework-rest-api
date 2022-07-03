@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+/* const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const { META_PASSWORD } = process.env;
@@ -26,3 +26,23 @@ transporter
   .sendMail(email)
   .then(() => console.log("Email send success"))
   .catch((error) => console.log(error.message));
+ */
+
+const sgMail = require("@sendgrid/mail");
+require("dotenv").config();
+
+const { SEND_GRID_API_KEY } = process.env;
+
+sgMail.setApiKey(SEND_GRID_API_KEY);
+
+const sendEmail = async (data) => {
+  const email = { ...data, from: "iruna456@meta.ua" };
+  try {
+    await sgMail.send(email);
+    return true;
+  } catch (error) {
+    throw new Error();
+  }
+};
+
+module.exports = sendEmail;
